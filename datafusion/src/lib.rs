@@ -31,7 +31,7 @@
 //!
 //! DataFusion supports both an SQL and a DataFrame API for building logical query plans
 //! as well as a query optimizer and execution engine capable of parallel execution
-//! against partitioned data sources (CSV and Parquet) using threads.
+//! against partitioned data sources (CSV) using threads.
 //!
 //! Below is an example of how to execute a query against data stored
 //! in a CSV file using a [`DataFrame`](dataframe::DataFrame):
@@ -170,7 +170,6 @@
 //! * Coalesce partitions: [`CoalescePartitionsExec`](physical_plan::coalesce_partitions::CoalescePartitionsExec)
 //! * Limit: [`LocalLimitExec`](physical_plan::limit::LocalLimitExec) and [`GlobalLimitExec`](physical_plan::limit::GlobalLimitExec)
 //! * Scan a CSV: [`CsvExec`](physical_plan::csv::CsvExec)
-//! * Scan a Parquet: [`ParquetExec`](physical_plan::parquet::ParquetExec)
 //! * Scan from memory: [`MemoryExec`](physical_plan::memory::MemoryExec)
 //! * Explain the plan: [`ExplainExec`](physical_plan::explain::ExplainExec)
 //!
@@ -197,13 +196,9 @@
 //!
 //! cargo run --example csv_sql
 //!
-//! cargo run --example parquet_sql
-//!
 //! cargo run --example dataframe
 //!
 //! cargo run --example dataframe_in_memory
-//!
-//! cargo run --example parquet_sql
 //!
 //! cargo run --example simple_udaf
 //!
@@ -229,7 +224,6 @@ pub mod variable;
 
 // re-export dependencies from arrow-rs to minimise version maintenance for crate users
 pub use arrow;
-pub use parquet;
 
 #[cfg(test)]
 pub mod test;

@@ -30,7 +30,7 @@ use arrow::{
 use crate::error::{DataFusionError, Result};
 use crate::{datasource::TableProvider, logical_plan::plan::ToStringifiedPlan};
 use crate::{
-    datasource::{empty::EmptyTable, parquet::ParquetTable, CsvFile, MemTable},
+    datasource::{empty::EmptyTable, CsvFile, MemTable},
     prelude::CsvReadOptions,
 };
 
@@ -132,27 +132,6 @@ impl LogicalPlanBuilder {
         table_name: impl Into<String>,
     ) -> Result<Self> {
         let provider = Arc::new(CsvFile::try_new(path, options)?);
-        Self::scan(table_name, provider, projection)
-    }
-
-    /// Scan a Parquet data source
-    pub fn scan_parquet(
-        path: impl Into<String>,
-        projection: Option<Vec<usize>>,
-        max_partitions: usize,
-    ) -> Result<Self> {
-        let path = path.into();
-        Self::scan_parquet_with_name(path.clone(), projection, max_partitions, path)
-    }
-
-    /// Scan a Parquet data source and register it with a given table name
-    pub fn scan_parquet_with_name(
-        path: impl Into<String>,
-        projection: Option<Vec<usize>>,
-        max_partitions: usize,
-        table_name: impl Into<String>,
-    ) -> Result<Self> {
-        let provider = Arc::new(ParquetTable::try_new(path, max_partitions)?);
         Self::scan(table_name, provider, projection)
     }
 

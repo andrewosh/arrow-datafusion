@@ -25,7 +25,6 @@ use std::result;
 use arrow::error::ArrowError;
 #[cfg(feature = "avro")]
 use avro_rs::Error as AvroError;
-use parquet::errors::ParquetError;
 use sqlparser::parser::ParserError;
 
 /// Result type for operations that could result in an [DataFusionError]
@@ -37,8 +36,6 @@ pub type Result<T> = result::Result<T, DataFusionError>;
 pub enum DataFusionError {
     /// Error returned by arrow.
     ArrowError(ArrowError),
-    /// Wraps an error from the Parquet crate
-    ParquetError(ParquetError),
     /// Wraps an error from the Avro crate
     #[cfg(feature = "avro")]
     AvroError(AvroError),
@@ -82,12 +79,6 @@ impl From<ArrowError> for DataFusionError {
     }
 }
 
-impl From<ParquetError> for DataFusionError {
-    fn from(e: ParquetError) -> Self {
-        DataFusionError::ParquetError(e)
-    }
-}
-
 #[cfg(feature = "avro")]
 impl From<AvroError> for DataFusionError {
     fn from(e: AvroError) -> Self {
@@ -105,9 +96,6 @@ impl Display for DataFusionError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match *self {
             DataFusionError::ArrowError(ref desc) => write!(f, "Arrow error: {}", desc),
-            DataFusionError::ParquetError(ref desc) => {
-                write!(f, "Parquet error: {}", desc)
-            }
             #[cfg(feature = "avro")]
             DataFusionError::AvroError(ref desc) => {
                 write!(f, "Avro error: {}", desc)

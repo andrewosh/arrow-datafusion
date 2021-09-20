@@ -627,7 +627,6 @@ pub mod limit;
 pub mod math_expressions;
 pub mod memory;
 pub mod metrics;
-pub mod parquet;
 pub mod planner;
 pub mod projection;
 #[cfg(feature = "regex_expressions")]
