@@ -25,6 +25,7 @@ use sqlparser::{
     parser::{Parser, ParserError},
     tokenizer::{Token, Tokenizer},
 };
+use serde::{Serialize, Deserialize};
 use std::str::FromStr;
 
 // Use `Parser::expected` instead, if possible
@@ -35,7 +36,7 @@ macro_rules! parser_err {
 }
 
 /// Types of files to parse as DataFrames
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum FileType {
     /// Newline-delimited JSON
     NdJson,
@@ -65,7 +66,7 @@ impl FromStr for FileType {
 }
 
 /// DataFusion extension DDL for `CREATE EXTERNAL TABLE`
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CreateExternalTable {
     /// Table name
     pub name: String,
@@ -82,7 +83,7 @@ pub struct CreateExternalTable {
 /// DataFusion Statement representations.
 ///
 /// Tokens parsed by `DFParser` are converted into these values.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Statement {
     /// ANSI SQL AST node
     Statement(SQLStatement),
